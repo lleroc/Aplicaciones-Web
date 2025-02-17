@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <!DOCTYPE html>
+    <html lang="es">
+      <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Programación Web en C# y Visual Studio</title>
+        <style>
+          body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+          }
+          header {
+            background: #007bff;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+          }
+          nav ul {
+            list-style: none;
+            padding: 0;
+          }
+          nav ul li {
+            display: inline;
+            margin: 0 15px;
+          }
+          nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+          }
+          section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+          }
+          footer {
+            text-align: center;
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            margin-top: 20px;
+          }
+        </style>
+      </head>
+      <body>
+        <header>
+          <h1>Programación Web en C# y Visual Studio</h1>
+        </header>
+
+        <section>
+          <h2>Introducción</h2>
+          <p>
+            En la programación web con C# y ASP.NET, el envío de datos entre el
+            cliente y el servidor se realiza mediante formularios HTML y se
+            pueden gestionar a través de los métodos HTTP GET y POST.
+          </p>
+        </section>
+
+        <section>
+          <h2>Envío de Variables por Formulario</h2>
+          <p>
+            Los formularios en una aplicación web permiten a los usuarios
+            ingresar datos y enviarlos al servidor.
+          </p>
+          <pre>
+&lt;form method="post" action="/Home/RecibirDatos"&gt;
+    &lt;label for="nombre"&gt;Nombre:&lt;/label&gt;
+    &lt;input type="text" id="nombre" name="nombre" required&gt;
+    &lt;br&gt;
+    &lt;label for="edad"&gt;Edad:&lt;/label&gt;
+    &lt;input type="number" id="edad" name="edad" required&gt;
+    &lt;br&gt;
+    &lt;button type="submit"&gt;Enviar&lt;/button&gt;
+&lt;/form&gt;
+        </pre
+          >
+        </section>
+
+        <section>
+          <h2>Método GET</h2>
+          <p>
+            El método GET se usa para recuperar datos del servidor enviando
+            información en la URL.
+          </p>
+          <pre>
+[HttpGet]
+public IActionResult RecibirDatos(string nombre, int edad)
+{
+    ViewData["Mensaje"] = $"Nombre: {nombre}, Edad: {edad}";
+    return View();
+}
+        </pre
+          >
+          <p>Ejemplo de URL:</p>
+          <p>
+            <code
+              >http://localhost:5000/Home/RecibirDatos?nombre=Juan&edad=25</code
+            >
+          </p>
+        </section>
+
+        <section>
+          <h2>Método POST</h2>
+          <p>
+            El método POST se usa para enviar datos al servidor de forma segura
+            en el cuerpo de la solicitud HTTP.
+          </p>
+          <pre>
+[HttpPost]
+public IActionResult RecibirDatos(string nombre, int edad)
+{
+    ViewData["Mensaje"] = $"Nombre: {nombre}, Edad: {edad}";
+    return View();
+}
+        </pre
+          >
+        </section>
+
+        <section>
+          <h2>Diferencias entre GET y POST</h2>
+          <table border="1" cellpadding="5" cellspacing="0">
+            <tr>
+              <th>Característica</th>
+              <th>GET</th>
+              <th>POST</th>
+            </tr>
+            <tr>
+              <td>Seguridad</td>
+              <td>Menos seguro (visible en URL)</td>
+              <td>Más seguro (oculto en el cuerpo de la solicitud)</td>
+            </tr>
+            <tr>
+              <td>Capacidad de datos</td>
+              <td>Limitada por la URL</td>
+              <td>No tiene limitaciones</td>
+            </tr>
+            <tr>
+              <td>Uso principal</td>
+              <td>Consultas y recuperación de datos</td>
+              <td>Envío y modificación de datos</td>
+            </tr>
+          </table>
+        </section>
+
+        <footer>
+          <p>
+            &copy; 2025 Programación Web en C# y Visual Studio. Todos los
+            derechos reservados.
+          </p>
+        </footer>
+      </body>
+    </html>
+  </body>
+</html>
