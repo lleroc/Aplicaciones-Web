@@ -8,6 +8,8 @@ namespace variables.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+       
+
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -17,7 +19,6 @@ namespace variables.Controllers
         public IActionResult Index(string cedula, string nombre, string apellido, int edad)
         {
             List<ClienteModel> _listaCliente = new List<ClienteModel>();
-            for (int i = 0; i < 10; i++) {
                 var cliente = new ClienteModel
                 {
                     Apellido = apellido,
@@ -30,9 +31,6 @@ namespace variables.Controllers
                     Id = 1
                 };
                 _listaCliente.Add(cliente);
-            }
-            
-
             return View(_listaCliente);
         }
 

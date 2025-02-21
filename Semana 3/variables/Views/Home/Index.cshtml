@@ -1,7 +1,6 @@
 ﻿@{
     @model List<ClienteModel>
     ViewData["Title"] = "Home Page";
-
 }
 
 <div class="text-center">
@@ -23,17 +22,14 @@
             </tr>
         </thead>
         <tbody>
-
             @foreach (var cliente in Model) {
                 <tr>
                     <td>@cliente.Cedula_RUC</td>
                     <td>@cliente.Nombre</td>
                     <td>@cliente.Apellido</td>
                     <td>@cliente.Edad</td>
-
                 </tr>
             }
-
         </tbody>
     </table>
 </div>
