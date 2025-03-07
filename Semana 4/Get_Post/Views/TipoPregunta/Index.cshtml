@@ -19,9 +19,11 @@
         @foreach (var tipo in Model) {
             <tr>
                 <td>@contador</td>
-                <td><label>
-                    @Html.DisplayFor(tipopreegunta => tipo.Detalle)
-                    </label</td>
+                <td>@Html.DisplayFor(tipopreegunta => tipo.Detalle)</td>
+                <td>
+                <a asp-action="Editar" class="btn btn-outline-warning" asp-route-id="@tipo.Id">Editar</a>
+                <a asp-action="Eliminar" class="btn btn-outline-danger" asp-route-id="@tipo.Id">Eliminar</a>
+                </td>
             </tr>
             contador += 1;
         }

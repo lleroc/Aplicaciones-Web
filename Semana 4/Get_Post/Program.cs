@@ -1,13 +1,16 @@
 using Get_Post.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 var cn = builder.Configuration.GetConnectionString("sqlServer");
 builder.Services.AddDbContext<Get_PostDbContext>(op => op.UseSqlServer(cn));
-//builder.Services.AddDbContext<Get_PostDbContext>(op => op.UseSqlServer(cn));
 
+
+builder.Services.AddDefaultIdentity<Get_PostDbContext>(identity => 
+identity.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<Get_PostDbContext>();
 
 
 

@@ -1,10 +1,11 @@
 ﻿namespace Get_Post.Data
 {
     using Get_Post.Models;
+    using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore;
-    public class Get_PostDbContext:DbContext
+    public class Get_PostDbContext:IdentityDbContext
     {
-        public Get_PostDbContext(DbContextOptions db):base(db)
+        public Get_PostDbContext(DbContextOptions<Get_PostDbContext> db):base(db)
         {
             //que tipo de proyecto ????
             //conectar con una API de IA
