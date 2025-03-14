@@ -28,8 +28,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="DetalleFactura" asp-action="Index">Detalle Factura</a>
                         </li>
-                        @if (User.IsInRole("Admin") || User.IsInRole("Escritor"))
-                        {
+                        
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedores</a>
                             </li>
@@ -39,7 +38,7 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Stocks" asp-action="Index">Inventarios (Stock)</a>
                             </li>
-                        }
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

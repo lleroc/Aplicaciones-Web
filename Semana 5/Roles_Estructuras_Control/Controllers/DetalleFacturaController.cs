@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Roles_Estructuras_Control.Data;
 using Roles_Estructuras_Control.Models;
+using Roles_Estructuras_Control.Models.Dto;
 
 namespace Roles_Estructuras_Control.Controllers
 {
@@ -23,22 +26,38 @@ namespace Roles_Estructuras_Control.Controllers
         // GET: DetalleFactura
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = 
-                _context.DetalleFactura
-                .Include(d => d.FacturaModel)
-                .Include(d => d.ProductoModels)
-                .Include(d => d.StockModels);
-
-            //select* from DetalleFactura
-            //INNER JOIN Facturas on DetalleFactura.FacturaModelId = Facturas.Id
-            //inner join Productos on DetalleFactura.ProductoModelsId = Productos.Id
-            //inner join Stocks on DetalleFactura.StockModelsId = Stocks.Id
-
-
-
-
-            return View(await applicationDbContext.ToListAsync());
+           return View();
         }
+        public List<DtoDetalleFactura> Tabla()
+        {
+            var dtf = _context.DetalleFactura
+                 .Include(d => d.FacturaModel)
+                 .Include(d => d.ProductoModels)
+                 .Include(d => d.StockModels);
+            List<DtoDetalleFactura> dtofac = new List<DtoDetalleFactura>();
+            foreach (var deta in dtf)
+            {
+                var dtoDetalle = new DtoDetalleFactura
+                {
+                    Cantidad = deta.Cantidad,
+                    Id = deta.Id,
+                    Nombre_Producto = deta.ProductoModels.NombreProducto,
+                    Precio = deta.valor,
+                    Total = deta.Cantidad * deta.valor
+                };
+                dtofac.Add(dtoDetalle);
+            }
+            return dtofac;
+        }
+
+        //# Nombre_Productos, Catidad, Precio Unitario, Total
+
+
+        public List<ClientesModel> ListaClientes()
+        {
+            return _context.Clientes.ToList();
+        }
+        
 
         // GET: DetalleFactura/Details/5
         public async Task<IActionResult> Details(int? id)
