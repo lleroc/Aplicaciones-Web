@@ -28,36 +28,11 @@ namespace Roles_Estructuras_Control.Controllers
         {
            return View();
         }
-        public List<DtoDetalleFactura> Tabla()
-        {
-            var dtf = _context.DetalleFactura
-                 .Include(d => d.FacturaModel)
-                 .Include(d => d.ProductoModels)
-                 .Include(d => d.StockModels);
-            List<DtoDetalleFactura> dtofac = new List<DtoDetalleFactura>();
-            foreach (var deta in dtf)
-            {
-                var dtoDetalle = new DtoDetalleFactura
-                {
-                    Cantidad = deta.Cantidad,
-                    Id = deta.Id,
-                    Nombre_Producto = deta.ProductoModels.NombreProducto,
-                    Precio = deta.valor,
-                    Total = deta.Cantidad * deta.valor
-                };
-                dtofac.Add(dtoDetalle);
-            }
-            return dtofac;
-        }
+       
 
         //# Nombre_Productos, Catidad, Precio Unitario, Total
 
 
-        public List<ClientesModel> ListaClientes()
-        {
-            return _context.Clientes.ToList();
-        }
-        
 
         // GET: DetalleFactura/Details/5
         public async Task<IActionResult> Details(int? id)

@@ -4,55 +4,12 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 <h1>Index</h1>
-
-
-<script>
-    $().ready(
-        ()=>{
-            var html = ""
-             $.get("../../detallefactura/Tabla",(listaclientes)=>{
-                
-               $.each(listaclientes, (index, valor)=>{
-                     html += ` <tr>
-                                 <td> ${(index + 1) } </td>
-                                   <td> ${valor.Cantidad} </td>
-                                  <td>${valor.Nombre_Producto} </td>
-                                   <td> ${valor.Precio} </td>
-                                    <td> ${valor.Total} </td>
-                                 <td>
-                                     <a class="btn btn-outline-warning"  >Edit</a> |
-                                     <a class="btn btn-outline-info" >Details</a> |
-                                     <a class="btn btn-outline-danger" >Delete</a>
-                                 </td>
-                             </tr>`
-                })
-                 $("#tablaclientes").html(html)
-            })
-        }
-    );
-   /* document.addEventListener("DOMContentLoaded", async ()=>{
-        const ClientesSelect = document.getElementById("clientes")
-         var html = "<option values=0>Seleccione una opcion</option>"
-          const listaClientes = await fetch("../../detallefactura/ListaClientes")
-          console.log(listaClientes)
-          try{
-                if (!listaClientes.ok) throw new Error("Error al obtener la lista de clientes")
-                listaClientes = await listaClientes.json();
-                listaClientes.foreach((cliente)=>{
-                  html += `<option value="${cliente.id}">${cliente.nombre}</option>`
-                })
-                ClientesSelect.innerHTML = html
-          }catch(ex){
-
-          }
-     })*/
-</script>
 <div class="row-cols-2">
     <div class="col-md-6">
         <label class="control-label">Clientes</label>
-        <select class="form-select" id="clientes" >
+        <select class="form-select" id="listaClientes">
 
         </select>
     </div>
