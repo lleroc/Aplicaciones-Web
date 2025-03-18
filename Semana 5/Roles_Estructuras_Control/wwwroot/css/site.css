@@ -20,3 +20,8 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+#cancelar {
+    /*visibility:hidden*/
+    display:none
+}
