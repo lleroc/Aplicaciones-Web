@@ -25,9 +25,9 @@ namespace Roles_Estructuras_Control.Controllers
             return View(await _context.Productos.ToListAsync());
         }
 
-        public  List<ProductoModels> ListaProductos()
+        public  List<StockModels> ListaProductos()
         {
-            return _context.Productos.ToList();
+            return _context.Stocks.Include(pd => pd.ProductoModels).ToList();
         }
 
         // GET: Productos/Details/5

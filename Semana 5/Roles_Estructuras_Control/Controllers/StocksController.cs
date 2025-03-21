@@ -26,6 +26,17 @@ namespace Roles_Estructuras_Control.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
+        public bool controlarstock(int id, int cantidad) {
+
+            var cn = _context.Stocks.FirstOrDefault(st => st.Id == id);
+            if (cn == null) return false;
+            if (cn.Cantidad >= cantidad) return true;
+            return false;
+        }
+
+
+
         // GET: Stocks/Details/5
         public async Task<IActionResult> Details(int? id)
         {

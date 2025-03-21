@@ -26,3 +26,20 @@ var limpiarcajas = () => {
     var limpiarcajas = new DetalleFactura()
     limpiarcajas.limpiarCampos()
 }
+
+var listaProductos = () => {
+    var listaProductos = new DetalleFactura()
+    listaProductos.listaProductos()
+
+}
+
+var controlarstock = (caja) => {
+    var controlarstock = new DetalleFactura()
+    controlarstock.controlarstock(caja.id, caja.value)
+}
+
+
+var cargarProdcutosLista = (id, precio, nombre) => {
+    var cargarProdcutosLista = new DetalleFactura()
+    cargarProdcutosLista.cargarProdcutosLista(id, precio, nombre);
+}
