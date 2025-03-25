@@ -43,3 +43,13 @@ var cargarProdcutosLista = (id, precio, nombre) => {
     var cargarProdcutosLista = new DetalleFactura()
     cargarProdcutosLista.cargarProdcutosLista(id, precio, nombre);
 }
+
+var eliminarfila = (boton) => {
+    var eliminarfila = new DetalleFactura()
+    eliminarfila.eliminarfila(boton)
+}
+
+var actualizarTotal = () => {
+    var actualizarTotal = new DetalleFactura()
+    actualizarTotal.actualizarTotal()
+}

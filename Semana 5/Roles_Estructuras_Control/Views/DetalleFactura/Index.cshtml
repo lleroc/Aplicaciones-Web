@@ -52,20 +52,7 @@
 
         <button onclick="listaProductos()" class="btn btn-outline-success" data-bs-toggle="modal"
                 data-bs-target="#productos">Agregar Producto</button>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Nombre Producto</th>
-                    <th>Cantidad</th>
-                    <th>P/U</th>
-                    <th>Total</th>
-                   
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+       
     </div>
 </div>
 
@@ -94,11 +81,33 @@
             
         </tr>
     </thead>
-    <tbody>
+    <tbody id="cuerpoTabla">
         
        
 
     </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="4" class="text-end">Subtotal:</td>
+            <td id="subtotal">0.00</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-end">Descuento:</td>
+            <td><input id="descuentoId" onfocusouy="actualizarTotal()" class="form-control" type="number" placeholder="5%" /></td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-end">Descuento:</td>
+            <td id="descuento">0.00</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-end">IVA 15%:</td>
+            <td id="iva">0.00</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="text-end">Total a Pagar:</td>
+            <td id="total">0.00</td>
+        </tr>
+    </tfoot>
 </table>
 
 

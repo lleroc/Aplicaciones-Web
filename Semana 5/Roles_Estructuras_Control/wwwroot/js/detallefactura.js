@@ -79,7 +79,7 @@
     }
 
 
-    cargarProdcutosLista(id, precio, nombre) {
+    async cargarProdcutosLista(id, precio, nombre) {
         
         var cantidad = $(`#stock-${id}`).val()
         if (!cantidad || cantidad <= 0) {
@@ -103,13 +103,49 @@
             <td>
                 ${cantidad * precio}
             </td>
+            <td>
+            <button class="btn btn-danger" onclick="eliminarfila(this)">X</button>
+            </td>
 
         </tr>`
-        $("#tablaclientes").append(html)
+        await $("#tablaclientes").append(html)
 
-        $("#productos").modal("hide")
+        await $("#productos").modal("hide")
+        actualizarTotal()
 
     }
+
+    eliminarfila(boton) {
+        $(boton).closest("tr").remove();
+        actualizarTotal()
+
+    }
+
+    actualizarTotal() {
+        let subtotal = 0
+        $("#cuerpoTabla tr").each(function (){
+            const valor = parseFloat($(this).find("td:eq(4)").text())
+            if (!isNaN(valor)) {
+                subtotal +=valor
+            }
+        })
+        let descuentoIngreado = $("#descuentoId").val()
+        let descuento = 0
+        if (descuentoIngreado > 0 ){
+            descuento = (parseFloat(descuentoIngreado) * subtotal) / 100
+        } 
+        let subtotalcondescuento = subtotal - descuento
+        let iva = subtotalcondescuento * 0.15
+        let total = iva + subtotalcondescuento
+
+        $("#subtotal").text(subtotal)
+        $("#descuento").text(descuento)
+        $("#iva").text(iva.toFixed(2))
+        $("#total").text(total.toFixed(2))
+
+    }
+
+
 
     limpiarCampos() {
         $("#NombreCliente").prop('disabled', true)
