@@ -65,22 +65,25 @@ namespace Roles_Estructuras_Control.Controllers
             return View();
         }
 
-        // POST: Stocks/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Cantidad,FechaFabricacion,FechaCaducidad,FechaRegistro,ProductoModelsId,ProveedoresModelsId")] StockModels stockModels)
-        {
-            if (ModelState.IsValid)
+     
+        public string Create(int id, int cantidad) {
+
+            var stockmodel = _context.Stocks.First(st => st.Id == id);
+            stockmodel.Cantidad = stockmodel.Cantidad - cantidad;
+            try
             {
-                _context.Add(stockModels);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                _context.Add(stockmodel);
+                _context.SaveChangesAsync();
+
+
+                return "Se guardo con exito";
+
             }
-            ViewData["ProductoModelsId"] = new SelectList(_context.Productos, "Id", "NombreProducto", stockModels.ProductoModelsId);
-            ViewData["ProveedoresModelsId"] = new SelectList(_context.Proveedores, "Id", "Correo", stockModels.ProveedoresModelsId);
-            return View(stockModels);
+            catch (Exception e)
+            {
+                return e.Message;
+            }
+                                 
         }
 
         // GET: Stocks/Edit/5

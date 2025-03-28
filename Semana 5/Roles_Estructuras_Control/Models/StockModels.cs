@@ -1,5 +1,8 @@
 ﻿
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Roles_Estructuras_Control.Models
 {
@@ -23,6 +26,12 @@ namespace Roles_Estructuras_Control.Models
 
         public float precioUnitario { get; set; }
         public float precioVenta { get; set; }
+
+
+        public bool estado { get; set; }
+
+        [NotMapped]
+        public string PrecioFinalCalculado { get; set; }
         /////relaciones
         ///con producto
         public int ProductoModelsId { get; set; }
@@ -30,5 +39,15 @@ namespace Roles_Estructuras_Control.Models
         /////con proveedorr
         public int ProveedoresModelsId { get; set; }
         public ProveedoresModels ProveedoresModels { get; set; }
+
+        ///aspnet users
+        ///
+
+
+
+
     }
+
+
+
 }

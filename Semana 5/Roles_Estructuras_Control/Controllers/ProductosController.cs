@@ -27,7 +27,7 @@ namespace Roles_Estructuras_Control.Controllers
 
         public  List<StockModels> ListaProductos()
         {
-            return _context.Stocks.Include(pd => pd.ProductoModels).ToList();
+            return _context.Stocks.Include(pd => pd.ProductoModels).Where(st => st.estado == true).ToList();
         }
 
         // GET: Productos/Details/5
