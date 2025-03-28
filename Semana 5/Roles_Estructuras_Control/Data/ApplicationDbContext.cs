@@ -5,7 +5,7 @@ using Roles_Estructuras_Control.Models;
 
 namespace Roles_Estructuras_Control.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
+    public class ApplicationDbContext : IdentityDbContext<UsuariosModel>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

@@ -21,5 +21,9 @@
         public int StockModelsId { get; set; }
         public StockModels StockModels { get; set; }
 
+        //usuario
+        public string IdentityUserId { get; set; }
+        public UsuariosModel UsuariosModel { get; set; }
+
     }
 }

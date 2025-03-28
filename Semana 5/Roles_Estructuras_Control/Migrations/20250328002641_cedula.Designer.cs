@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Roles_Estructuras_Control.Data;
 
@@ -11,9 +12,11 @@ using Roles_Estructuras_Control.Data;
 namespace Roles_Estructuras_Control.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250328002641_cedula")]
+    partial class cedula
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,17 +201,11 @@ namespace Roles_Estructuras_Control.Migrations
                     b.Property<int>("FacturaModelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("IdentityUserId")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ProductoModelsId")
                         .HasColumnType("int");
 
                     b.Property<int>("StockModelsId")
                         .HasColumnType("int");
-
-                    b.Property<string>("UsuariosModelId")
-                        .HasColumnType("nvarchar(450)");
 
                     b.Property<float>("valor")
                         .HasColumnType("real");
@@ -220,8 +217,6 @@ namespace Roles_Estructuras_Control.Migrations
                     b.HasIndex("ProductoModelsId");
 
                     b.HasIndex("StockModelsId");
-
-                    b.HasIndex("UsuariosModelId");
 
                     b.ToTable("DetalleFactura");
                 });
@@ -487,17 +482,11 @@ namespace Roles_Estructuras_Control.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Roles_Estructuras_Control.Models.UsuariosModel", "UsuariosModel")
-                        .WithMany()
-                        .HasForeignKey("UsuariosModelId");
-
                     b.Navigation("FacturaModel");
 
                     b.Navigation("ProductoModels");
 
                     b.Navigation("StockModels");
-
-                    b.Navigation("UsuariosModel");
                 });
 
             modelBuilder.Entity("Roles_Estructuras_Control.Models.FacturaModel", b =>
