@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Roles_Estructuras_Control.Data;
 using Roles_Estructuras_Control.Models;
 using Roles_Estructuras_Control.Models.Dto;
+using System.Text.Json;
 
 namespace Roles_Estructuras_Control.Controllers
 {
@@ -26,9 +27,9 @@ namespace Roles_Estructuras_Control.Controllers
         // GET: DetalleFactura
         public async Task<IActionResult> Index()
         {
-           return View();
+            return View();
         }
-       
+
 
         //# Nombre_Productos, Catidad, Precio Unitario, Total
 
@@ -179,6 +180,129 @@ namespace Roles_Estructuras_Control.Controllers
         private bool DetalleFacturaModelExists(int id)
         {
             return _context.DetalleFactura.Any(e => e.Id == id);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> GuardarFactura([FromBody] JsonElement data)
+        {
+            try
+            {
+                // Validar que se recibieron datos
+                if (data.ValueKind == JsonValueKind.Null)
+                {
+                    return Json(new { success = false, message = "No se recibieron datos de la factura" });
+                }
+
+                // Obtener el último número de factura
+                var ultimaFactura = await _context.Facturas
+                    .OrderByDescending(f => f.NumeroFacrtura)
+                    .FirstOrDefaultAsync();
+
+                int nuevoNumeroFactura = 1;
+                if (ultimaFactura != null)
+                {
+                    nuevoNumeroFactura = ultimaFactura.NumeroFacrtura + 1;
+                }
+
+                // Validar datos del cliente
+                var clienteId = data.GetProperty("cliente").GetProperty("id").GetString();
+                if (string.IsNullOrEmpty(clienteId))
+                {
+                    return Json(new { success = false, message = "El ID del cliente es requerido" });
+                }
+
+                // Crear la factura
+                var factura = new FacturaModel
+                {
+                    FechaIngreso = DateOnly.FromDateTime(DateTime.Now),
+                    NumeroFacrtura = nuevoNumeroFactura,
+                    ClientesModelId = int.Parse(clienteId)
+                };
+
+                _context.Facturas.Add(factura);
+                await _context.SaveChangesAsync();
+
+                // Obtener el usuario actual
+                var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userId))
+                {
+                    return Json(new { success = false, message = "No se pudo obtener el ID del usuario" });
+                }
+
+                // Procesar cada producto
+                var productos = data.GetProperty("productos").EnumerateArray();
+                if (!productos.Any())
+                {
+                    return Json(new { success = false, message = "La factura debe contener al menos un producto" });
+                }
+
+                foreach (var producto in productos)
+                {
+                    var nombreProducto = producto.GetProperty("nombreProducto").GetString().Trim();
+                    var stock = await _context.Stocks
+                        .Include(s => s.ProductoModels)
+                        .FirstOrDefaultAsync(s => s.ProductoModels.NombreProducto.Trim() == nombreProducto);
+
+                    if (stock == null)
+                    {
+                        return Json(new { success = false, message = $"No se encontró el producto: {nombreProducto}" });
+                    }
+
+                    // Convertir cantidad a número de manera segura
+                    var cantidadElement = producto.GetProperty("cantidad");
+                    int cantidad;
+                    if (cantidadElement.ValueKind == JsonValueKind.Number)
+                    {
+                        cantidad = cantidadElement.GetInt32();
+                    }
+                    else
+                    {
+                        cantidad = int.Parse(cantidadElement.GetString());
+                    }
+
+                    if (stock.Cantidad < cantidad)
+                    {
+                        return Json(new { success = false, message = $"No hay suficiente stock para el producto: {nombreProducto}" });
+                    }
+
+                    // Convertir precio unitario a número de manera segura
+                    var precioElement = producto.GetProperty("precioUnitario");
+                    float precioUnitario;
+                    if (precioElement.ValueKind == JsonValueKind.Number)
+                    {
+                        precioUnitario = precioElement.GetSingle();
+                    }
+                    else
+                    {
+                        precioUnitario = float.Parse(precioElement.GetString());
+                    }
+
+                    // Crear el detalle de factura
+                    var detalleFactura = new DetalleFacturaModel
+                    {
+                        Cantidad = cantidad,
+                        valor = precioUnitario,
+                        ProductoModelsId = stock.ProductoModelsId,
+                        FacturaModelId = factura.Id,
+                        StockModelsId = stock.Id,
+                        IdentityUserId = userId
+                    };
+
+                    _context.DetalleFactura.Add(detalleFactura);
+
+                    // Actualizar el stock
+                    stock.Cantidad -= cantidad;
+                    _context.Stocks.Update(stock);
+                }
+
+                await _context.SaveChangesAsync();
+
+                return Json(new { success = true, message = "Factura guardada exitosamente", numeroFactura = nuevoNumeroFactura });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error al guardar la factura: " + ex.Message });
+            }
         }
     }
 }

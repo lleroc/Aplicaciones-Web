@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,24 +16,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Roles_Estructuras_Control.Models;
 
 namespace Roles_Estructuras_Control.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<UsuariosModel> _signInManager;
+        private readonly UserManager<UsuariosModel> _userManager;
+        private readonly IUserStore<UsuariosModel> _userStore;
+        private readonly IUserEmailStore<UsuariosModel> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         private readonly RoleManager<IdentityRole> _roles;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<UsuariosModel> userManager,
+            IUserStore<UsuariosModel> userStore,
+            SignInManager<UsuariosModel> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender, RoleManager<IdentityRole> roles)
         {
@@ -72,27 +72,29 @@ namespace Roles_Estructuras_Control.Areas.Identity.Pages.Account
         /// </summary>
         public class InputModel
         {
-           
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
-           
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
-            
+
             [DataType(DataType.Password)]
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
 
-            public int RolesId { get; set; }
+            public string RoleId { get; set; }
+
+            public string Cedula { get; set; }
         }
 
 
@@ -100,16 +102,21 @@ namespace Roles_Estructuras_Control.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            ViewData["RolesId"] = new SelectList(_roles.Roles, "Id", "Name");
+
+            ViewData["RolesId"] = new SelectList(_roles.Roles, "Name", "Name");
 
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            
-           
+
+            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            if (ModelState.IsValid)
+            {
                 var user = CreateUser();
+
+                user.Cedula = Input.Cedula;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -119,9 +126,31 @@ namespace Roles_Estructuras_Control.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("User created a new account with password.");
 
+
+                    var roles = await _roles.FindByNameAsync(Input.RoleId);   //ahora tiene el nombre
+                    if (roles != null)
+                    {
+                        await _userManager.AddToRoleAsync(user, roles.Name);
+                    }
+                    else
+                    {
+                        _logger.LogWarning($"El Rol {Input.RoleId} no existe");
+                        ModelState.AddModelError(string.Empty, "El rol seleccionado no existe");
+                        ViewData["RolesId"] = new SelectList(_roles.Roles, "Name", "Name");
+                        return Page();
+                    }
+
+
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+
+
+
+
+
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
@@ -144,34 +173,36 @@ namespace Roles_Estructuras_Control.Areas.Identity.Pages.Account
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
+
                 }
-           
+            }
 
             // If we got this far, something failed, redisplay form
+            ViewData["RolesId"] = new SelectList(_roles.Roles, "Name", "Name");
             return Page();
         }
 
-        private IdentityUser CreateUser()
+        private UsuariosModel CreateUser()
         {
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                return Activator.CreateInstance<UsuariosModel>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(UsuariosModel)}'. " +
+                    $"Ensure that '{nameof(UsuariosModel)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<UsuariosModel> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
             {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
             }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+            return (IUserEmailStore<UsuariosModel>)_userStore;
         }
     }
 }

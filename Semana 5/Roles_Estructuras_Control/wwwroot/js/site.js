@@ -53,3 +53,9 @@ var actualizarTotal = () => {
     var actualizarTotal = new DetalleFactura()
     actualizarTotal.actualizarTotal()
 }
+
+
+var guardarFactura = () => {
+    var guardarFactura = new DetalleFactura();
+    guardarFactura.guardarFactura();
+};

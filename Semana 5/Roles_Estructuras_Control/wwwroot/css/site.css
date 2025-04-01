@@ -25,3 +25,27 @@ body {
     /*visibility:hidden*/
     display:none
 }
+
+
+@media
+print {
+    .no-print
+
+{
+    display: none !important;
+}
+
+
+.table {
+    width: 100% !important;
+    
+}
+
+    .table td,
+    .table th {
+        /*padding: 0.5rem !important;*/
+    }
+
+
+
+}

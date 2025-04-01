@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="~/Roles_Estructuras_Control.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
+    <header class="no-print">
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Roles_Estructuras_Control</a>
@@ -26,10 +26,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="DetalleFactura" asp-action="Index">Detalle Factura</a>
-                        </li>
-                        
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Escritor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="DetalleFactura" asp-action="Index">Detalle Factura</a>
+                            </li>
+
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Proveedores" asp-action="Index">Proveedores</a>
                             </li>
@@ -39,6 +43,9 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Stocks" asp-action="Index">Inventarios (Stock)</a>
                             </li>
+                        }
+
+                       
                         
                     </ul>
                     <partial name="_LoginPartial" />
@@ -52,7 +59,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted no-print">
         <div class="container">
             &copy; 2025 - Roles_Estructuras_Control - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>

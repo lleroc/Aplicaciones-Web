@@ -5,17 +5,20 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+
+
+<h1 class="no-print">Index</h1>
 <div class="row-cols-2">
-    <div class="col-md-6">
-        <label class="control-label">Clientes</label>
-        <select class="form-select" id="listaClientes" onchange="unCliente()">
+    <div class="col-md-12">
+        <label class="control-label no-print">Clientes</label>
+        <select class="form-select no-print" id="listaClientes" onchange="unCliente()">
 
         </select>
-        <button onclick="nuevoCliente()" class="btn btn-outline-primary"><i class="icon-user-plus"></i></button>
-        <input hidden value="0" id="nuevoCliente"/>
+        <button onclick="nuevoCliente()" class="btn btn-outline-primary no-print"><i
+                class="icon-user-plus"></i></button>
+        <input hidden value="0" id="nuevoCliente" />
     </div>
-    <div class="col-md-6">
+    <div class="col-md-12">
         <table class="table table-bordered table-responsive table-striped">
             <tr>
                 <td><label>Nombre del Cliente</label></td>
@@ -24,12 +27,12 @@
             <tr>
                 <td>
                     <div class="input-group">
-                        <i class="icon-user"></i>
-                        <input class="form-control" id="NombreCliente" disabled="disabled"/>
+                        <i class="icon-user no-print"></i>
+                        <input class="form-control" id="NombreCliente" disabled="disabled" />
                     </div>
                 </td>
                 <td>
-                    <i class="icon-address-book"></i>
+                    <i class="icon-address-book no-print"></i>
                     <input class="form-control" id="DireccionCliente" disabled="disabled" />
                 </td>
             </tr>
@@ -39,27 +42,26 @@
             </tr>
             <tr>
                 <td>
-                    <i class="icon-phone-hang-up"></i>
+                    <i class="icon-phone-hang-up no-print"></i>
                     <input class="form-control" id="TelefonoCliente" disabled="disabled" />
                 </td>
                 <td>
-                    <i class="icon-envelop"></i>
+                    <i class="icon-envelop  no-print"></i>
                     <input class="form-control" id="EmailCliente" disabled="disabled" />
-                    </td>
+                </td>
             </tr>
         </table>
-        <button onclick="limpiarcajas()" id="cancelar" class="btn btn-outline-danger">Cancelar</button>
+        <button onclick="limpiarcajas()" id="cancelar" class="btn btn-outline-danger no-print">Cancelar</button>
 
-        <button onclick="listaProductos()" class="btn btn-outline-success" data-bs-toggle="modal"
-                data-bs-target="#productos">Agregar Producto</button>
-       
+        <button onclick="listaProductos()" class="btn btn-outline-success no-print" data-bs-toggle="modal"
+            data-bs-target="#productos">Agregar Producto</button>
+        <button onclick="guardarFactura()" class="btn btn-success no-print">Guardar Factura</button>
+        <button onclick="window.print()" class="btn btn-primary no-print">Imprimir Factura</button>
+
     </div>
 </div>
 
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table table-responsive table-bordered table-striped" id="tablaclientes">
     <thead>
         <tr>
@@ -67,23 +69,23 @@
                 #
             </th>
             <th>
-               Cantidad
+                Cantidad
             </th>
             <th>
-               Nombre Producto
+                Nombre Producto
             </th>
             <th>
-               Precio Unitario
+                Precio Unitario
             </th>
             <th>
                 Total
             </th>
-            
+
         </tr>
     </thead>
     <tbody id="cuerpoTabla">
-        
-       
+
+
 
     </tbody>
     <tfoot>
@@ -93,7 +95,8 @@
         </tr>
         <tr>
             <td colspan="4" class="text-end">Descuento:</td>
-            <td><input id="descuentoId" onfocusouy="actualizarTotal()" class="form-control" type="number" placeholder="5%" /></td>
+            <td><input id="descuentoId" onfocusouy="actualizarTotal()" class="form-control" type="number"
+                    placeholder="5%" /></td>
         </tr>
         <tr>
             <td colspan="4" class="text-end">Descuento:</td>
@@ -123,20 +126,20 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                    <div class="mb-3">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td>Buscador</td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="text" id="buscador" value="" class="form-control" />
-                                    <button class="btn btn-outline-info" onclick="buscarProducto()">Buscar</button>
-                                </td>
-                            </tr>
-                          <tr>
-                              <table class="table table-bordered table-responsive table-striped">
-                                  <thead>
+                <div class="mb-3">
+                    <table class="table table-bordered">
+                        <tr>
+                            <td>Buscador</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <input type="text" id="buscador" value="" class="form-control" />
+                                <button class="btn btn-outline-info" onclick="buscarProducto()">Buscar</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <table class="table table-bordered table-responsive table-striped">
+                                <thead>
                                     <tr>
                                         <th>#</th>
                                         <th>Nombre Producto</th>
@@ -144,17 +147,17 @@
                                         <th>Valor</th>
 
                                     </tr>
-                                  </thead>
-                                  <tbody id="cuerpoproducto">
-                                      
-                                  </tbody>
-                              </table>
-                          </tr>
-                        </table>
-                    </div>
+                                </thead>
+                                <tbody id="cuerpoproducto">
+
+                                </tbody>
+                            </table>
+                        </tr>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btn_agregar"  >Agregar Producto</button>
+                <button type="button" class="btn btn-primary" id="btn_agregar">Agregar Producto</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
 
             </div>
