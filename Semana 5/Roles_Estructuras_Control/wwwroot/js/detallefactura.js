@@ -85,16 +85,22 @@
     );
   }
 
-  async cargarProdcutosLista(id, precio, nombre) {
-    var cantidad = $(`#stock-${id}`).val();
-    if (!cantidad || cantidad <= 0) {
-      alert("Ingrese una cantidad valida");
-      return;
-    }
+    async cargarProdcutosLista(id, precio, nombre) {
+        var cantidad = $(`#stock-${id}`).val();
+        if (!cantidad || cantidad <= 0) {
+            alert("Ingrese una cantidad valida");
+            return;
+        }
 
-    var html = `<tr>
+        let contador = 0;
+        $("#cuerpoTabla tr").each(function () {
+            contador = parseInt($(this).find("td:eq(0)").text())
+        });
+
+      var html = `<tr>
+            
             <td>
-                #
+                ${ contador + 1 }
             </td>
             <td>
                 ${cantidad}

@@ -59,3 +59,17 @@ var guardarFactura = () => {
     var guardarFactura = new DetalleFactura();
     guardarFactura.guardarFactura();
 };
+
+
+var imprimirFactura = () => {
+    var contenidoOrignal = document.body.innerHTML;
+
+    var imprimir = document.getElementById("imprimir").innerHTML;
+
+    document.body.innerHTML = imprimir;
+
+    window.print();
+
+    document.body.innerHTML = contenidoOrignal;
+
+}
