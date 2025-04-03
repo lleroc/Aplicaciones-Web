@@ -12,9 +12,11 @@ using Roles_Estructuras_Control.Data;
 using Roles_Estructuras_Control.Models;
 using Roles_Estructuras_Control.Models.Dto;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Roles_Estructuras_Control.Controllers
 {
+    [Authorize(Roles = "Admin,Escritor")]
     public class DetalleFacturaController : Controller
     {
         private readonly ApplicationDbContext _context;

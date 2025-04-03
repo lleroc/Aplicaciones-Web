@@ -20,6 +20,7 @@ using Roles_Estructuras_Control.Models;
 
 namespace Roles_Estructuras_Control.Areas.Identity.Pages.Account
 {
+    [Authorize(Roles = "Admin")]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<UsuariosModel> _signInManager;

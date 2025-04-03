@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Roles_Estructuras_Control.Models;
 
 namespace Roles_Estructuras_Control.Controllers
 {
+
     public class ClientesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -31,9 +33,9 @@ namespace Roles_Estructuras_Control.Controllers
         }
 
         public ClientesModel unCliente(int id) {
-            
+
             return _context.Clientes.FirstOrDefault(cliente => cliente.Id == id);
-        
+
         }
 
         // GET: Clientes/Details/5
@@ -53,7 +55,7 @@ namespace Roles_Estructuras_Control.Controllers
 
             return View(clientesModel);
         }
-
+        [Authorize(Roles ="Admin,Escritor")]
         // GET: Clientes/Create
         public IActionResult Create()
         {
@@ -63,6 +65,7 @@ namespace Roles_Estructuras_Control.Controllers
         // POST: Clientes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Escritor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Direccion,Telefono,email")] ClientesModel clientesModel)
@@ -75,7 +78,7 @@ namespace Roles_Estructuras_Control.Controllers
             }
             return View(clientesModel);
         }
-
+        [Authorize(Roles = "Admin,Escritor")]
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -95,6 +98,7 @@ namespace Roles_Estructuras_Control.Controllers
         // POST: Clientes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Admin,Escritor")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Nombre,Direccion,Telefono,email")] ClientesModel clientesModel)
@@ -126,7 +130,7 @@ namespace Roles_Estructuras_Control.Controllers
             }
             return View(clientesModel);
         }
-
+        [Authorize(Roles = "Admin")]
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -144,7 +148,7 @@ namespace Roles_Estructuras_Control.Controllers
 
             return View(clientesModel);
         }
-
+        [Authorize(Roles = "Admin")]
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
